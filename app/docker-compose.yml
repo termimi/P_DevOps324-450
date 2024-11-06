@@ -8,3 +8,12 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - '27017:27017'
+
+  backend:
+    build:
+      context: ./backend  
+      dockerfile: dockerfile 
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
