@@ -10,14 +10,14 @@ services:
       - '27017:27017'
 
   backend:
-    build:
-      context: ./backend  
-      dockerfile: dockerfile 
+    image: mathisbot/backend
     ports:
       - "3000:3000"
+    depends_on:
+      - mongo
   frontend:
-    build:
-      context: ./frontend  
-      dockerfile: Dockerfile 
+    image: mathisbot/frontend 
     ports:
       - "4173:4173"
+    depends_on:
+      - backend
