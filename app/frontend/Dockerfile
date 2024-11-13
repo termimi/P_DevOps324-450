@@ -1,8 +1,8 @@
-FROM node:lts-alpine
+FROM node:20.12
 WORKDIR /app
 COPY package*.json ./
-RUN npm install 
+RUN npm install
 COPY . .
-RUN npm run build
-EXPOSE 8080
-CMD ["npm","run","dev"]
+EXPOSE 4173
+ENTRYPOINT [ "npm" ]
+CMD ["run","dev"]

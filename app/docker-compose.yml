@@ -15,5 +15,9 @@ services:
       dockerfile: dockerfile 
     ports:
       - "3000:3000"
-    environment:
-      - NODE_ENV=production
+  frontend:
+    build:
+      context: ./frontend  
+      dockerfile: Dockerfile 
+    ports:
+      - "4173:4173"
