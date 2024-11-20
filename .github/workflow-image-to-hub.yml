@@ -1,0 +1,30 @@
+name: New app version
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    name: push docker image to docker hub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: login
+        id: docker-hub
+        env: 
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          docker login -u $username -p $password
+      - name: build images
+        id: build-docker-image
+        run: |
+          docker build app/backend -f app/backend/dockerfile -t $username/backend-todo:latest
+          docker build app/frontend -f app/frontend/Dockerfile -t $username/frontend-todo:latest
+      - name: push docker image
+        id: push-docker-image
+        run: |
+          docker push $username/backend-todo:latest
+          docker push $username/frontend-todo:latest
