@@ -31,5 +31,5 @@ jobs:
       - name: push docker Images
         id: push-docker-images
         run: |
-          docker push $username/backend-todo:latest
-          docker push $username/frontend-todo:latest
+          docker push ellocosdelpopos/backend-todo:latest
+          docker push ellocosdelpopos/frontend-todo:latest
