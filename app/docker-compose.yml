@@ -10,17 +10,13 @@ services:
       - '27017:27017'
 
   backend:
-    build:
-        context: ./backend
-        dockerfile: dockerfile
+    image: ellocosdelpopos/backend-todo:latest
     ports:
       - "3000:3000"
     depends_on:
       - mongo
   frontend:
-    build:
-        context: ./frontend
-        dockerfile: dockerfile
+    image: ellocosdelpopos/frontend-todo:latest
     ports:
       - "4173:4173"
     depends_on:
