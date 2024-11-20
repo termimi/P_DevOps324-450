@@ -1,0 +1,23 @@
+services:
+
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: example
+    ports:
+      - '27017:27017'
+
+  backend:
+    image: ellocosdelpopos/backend-todo:latest
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+  frontend:
+    image: ellocosdelpopos/frontend-todo:latest
+    ports:
+      - "4173:4173"
+    depends_on:
+      - backend
