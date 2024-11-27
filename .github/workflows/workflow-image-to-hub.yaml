@@ -81,7 +81,7 @@ jobs:
 
       - name: Docker compose up
         run: |
-          docker-compose -f /app/docker-compose.yml up -d
+          docker-compose app/ -f app/docker-compose.yml up -d
 
       - name: Verify the containers of the app
         run: |
@@ -91,4 +91,4 @@ jobs:
 
       - name: Close containers
         run: |
-          docker-compose -f /app/docker-compose.yml stop
+          docker-compose app/ -f app/docker-compose.yml stop
