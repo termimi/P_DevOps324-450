@@ -86,7 +86,7 @@ jobs:
       - name: Verify the containers of the app
         run: |
           docker ps
-          curl -f http://localhost:4173
+          curl -f http://127.0.0.1:4173
 
       - name: Close containers
         run: |
