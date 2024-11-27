@@ -1,9 +1,7 @@
-name: New app version
+name: Production delpoyement
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 jobs:
   build:
@@ -11,6 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
       - name: login
         id: docker-hub
         env:
@@ -19,16 +18,19 @@ jobs:
         run: |
           docker login -u $username -p $password
           echo "username=$username" >> $GITHUB_ENV
+
       - name: build images
         id: build-docker-images
         run: |
           docker build app/backend -f app/backend/dockerfile -t backend-todo
           docker build app/frontend -f app/frontend/Dockerfile -t frontend-todo
+          
       - name: tag images
         id: tag-docker-images
         run: |
           docker tag backend-todo $username/backend-todo:latest
           docker tag frontend-todo $username/frontend-todo:latest
+          
       - name: push docker Images
         id: push-docker-images
         run: |
