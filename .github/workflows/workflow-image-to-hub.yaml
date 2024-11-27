@@ -134,10 +134,14 @@ jobs:
         run: |
           docker-compose -f app/docker-compose.yml up -d
 
+      - name: Time out to let the time for the containers to start
+        run: |
+         sleep 30
+
       - name: Verify the containers of the app
         run: |
-          sleep 30
           docker ps
+          curl -f http://localhost:3000
           curl -f http://localhost:4173
 
       - name: Close containers
