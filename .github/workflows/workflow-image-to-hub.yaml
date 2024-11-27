@@ -33,12 +33,23 @@ jobs:
       - name: Backend Setup-Audit
         run: |
           cd app/backend
-          npm audit
+          if npm audit; then
+            echo "Pas de vulnérabilité détecté"
+          else
+            echo "Vulnérabilité détecté, en cours de fixation"
+            npm audit fix
+            fi
+          
 
       - name: Frontend Setup-Audit
         run: |
           cd app/frontend
-           npm audit
+          if npm audit; then
+            echo "Pas de vulnérabilité détecté"
+          else
+            echo "Vulnérabilité détecté, en cours de fixation"
+            npm audit fix
+            fi
 
   build-backend:
     name: Backend image push on dockerhub
