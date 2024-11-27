@@ -1,16 +1,16 @@
-name: Production delpoyement
+name: Production Deployment
 
 on:
   workflow_dispatch:
 
 jobs:
-  build:
-    name: push images to dockerhub
+  build-backend:
+    name: Backend image push on dockerhub
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: login
+
+      - name: Login to Docker Hub
         id: docker-hub
         env:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -19,20 +19,47 @@ jobs:
           docker login -u $username -p $password
           echo "username=$username" >> $GITHUB_ENV
 
-      - name: build images
+      - name: Build Backend Image
         id: build-docker-images
         run: |
           docker build app/backend -f app/backend/dockerfile -t backend-todo
-          docker build app/frontend -f app/frontend/Dockerfile -t frontend-todo
-          
-      - name: tag images
+
+      - name: Tag Backend Image
         id: tag-docker-images
         run: |
           docker tag backend-todo $username/backend-todo:latest
-          docker tag frontend-todo $username/frontend-todo:latest
-          
-      - name: push docker Images
+
+      - name: Push Backend Image
         id: push-docker-images
         run: |
           docker push $username/backend-todo:latest
+
+  build-frontend:
+    name: Frontend image push on dockerhub
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        id: docker-hub
+        env:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+        run: |
+          docker login -u $username -p $password
+          echo "username=$username" >> $GITHUB_ENV
+
+      - name: Build Frontend Image
+        id: build-docker-images
+        run: |
+          docker build app/frontend -f app/frontend/Dockerfile -t frontend-todo
+
+      - name: Tag Frontend Image
+        id: tag-docker-images
+        run: |
+          docker tag frontend-todo $username/frontend-todo:latest
+
+      - name: Push Frontend Image
+        id: push-docker-images
+        run: |
           docker push $username/frontend-todo:latest
