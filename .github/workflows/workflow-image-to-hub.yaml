@@ -73,6 +73,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - name: Install docker-compose
+        run: |
+          sudo apt-get update
+          sudo apt-get install docker-compose-plugin
+          docker compose version
+
       - name: Docker compose up
         run: |
           docker-compose -f /app/docker-compose.yml up -d
