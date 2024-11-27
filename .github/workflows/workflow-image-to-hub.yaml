@@ -63,3 +63,26 @@ jobs:
         id: push-docker-images
         run: |
           docker push $username/frontend-todo:latest
+
+  validate-containers-app:
+    name: Validation of the containers app (Frontend and Backend)
+    runs-on: ubuntu-latest
+    needs:
+      - build-backend
+      - build-frontend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Docker compose up
+        run: |
+          docker-compose -f /app/docker-compose.yml up -d
+
+      - name: Verify the containers of the app
+        run: |
+          docker ps
+          curl -f http://localhost:3000
+          curl -f http://localhost:4173
+
+      - name: Close containers
+        run: |
+          docker-compose -f /app/docker-compose.yml stop
