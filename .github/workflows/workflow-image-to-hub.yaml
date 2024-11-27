@@ -18,6 +18,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
         run: |
           docker login -u $username -p $password
+          echo "username=$username" >> $GITHUB_ENV
       - name: build images
         id: build-docker-images
         run: |
@@ -26,10 +27,10 @@ jobs:
       - name: tag images
         id: tag-docker-images
         run: |
-          docker tag backend-todo ellocosdelpopos/backend-todo:latest
-          docker tag frontend-todo ellocosdelpopos/frontend-todo:latest
+          docker tag backend-todo $username/backend-todo:latest
+          docker tag frontend-todo $username/frontend-todo:latest
       - name: push docker Images
         id: push-docker-images
         run: |
-          docker push ellocosdelpopos/backend-todo:latest
-          docker push ellocosdelpopos/frontend-todo:latest
+          docker push $username/backend-todo:latest
+          docker push $username/frontend-todo:latest
