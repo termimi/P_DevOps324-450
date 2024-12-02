@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node --watch index.js",
     "start:env": "node --env-file=.env --watch index.js",
+    "test": "jest",
     "test:dev": "jest --watch",
     "test:ci": "jest --coverage --ci",
     "lint": "eslint"
