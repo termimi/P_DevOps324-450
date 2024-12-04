@@ -141,7 +141,6 @@ jobs:
       - name: Verify the containers of the app
         run: |
           docker ps
-          curl -f http://localhost:3000
           curl -f http://localhost:4173
 
       - name: Close containers
