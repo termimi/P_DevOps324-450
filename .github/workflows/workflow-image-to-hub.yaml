@@ -4,9 +4,58 @@ on:
   workflow_dispatch:
 
 jobs:
+  audit-linting:
+    name: Install Audit and Linting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Backend Install-Dependencies
+        run: |
+          cd app/backend
+          npm install
+
+      - name: Frontend Install-Dependencies
+        run: |
+          cd app/frontend
+          npm install
+
+      - name: Backend Setup-Lint
+        run: |
+          cd app/backend
+          npm run lint
+
+      - name: Frontend Setup-Lint
+        run: |
+          cd app/frontend
+          npm run lint
+      
+      - name: Backend Setup-Audit
+        run: |
+          cd app/backend
+          if npm audit; then
+            echo "Pas de vulnérabilité détecté"
+          else
+            echo "Vulnérabilité détecté, en cours de fixation"
+            npm audit fix
+            fi
+          
+
+      - name: Frontend Setup-Audit
+        run: |
+          cd app/frontend
+          if npm audit; then
+            echo "Pas de vulnérabilité détecté"
+          else
+            echo "Vulnérabilité détecté, en cours de fixation"
+            npm audit fix
+            fi
+
   build-backend:
     name: Backend image push on dockerhub
     runs-on: ubuntu-latest
+    needs:
+      - audit-linting
     steps:
       - uses: actions/checkout@v4
 
@@ -37,6 +86,8 @@ jobs:
   build-frontend:
     name: Frontend image push on dockerhub
     runs-on: ubuntu-latest
+    needs:
+      - audit-linting
     steps:
       - uses: actions/checkout@v4
 
@@ -81,7 +132,11 @@ jobs:
 
       - name: Docker compose up
         run: |
-          docker-compose -f /app/docker-compose.yml up -d
+          docker-compose -f app/docker-compose.yml up -d
+
+      - name: Time out to let the time for the containers to start
+        run: |
+         sleep 30
 
       - name: Verify the containers of the app
         run: |
@@ -91,4 +146,4 @@ jobs:
 
       - name: Close containers
         run: |
-          docker-compose -f /app/docker-compose.yml stop
+          docker-compose -f app/docker-compose.yml stop
