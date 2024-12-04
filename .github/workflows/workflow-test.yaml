@@ -16,7 +16,6 @@ jobs:
         run: |
           cd app/backend
           npm install supertest jest --save-dev jest
-          npm install
         
       - name: Run tests
         run: |
