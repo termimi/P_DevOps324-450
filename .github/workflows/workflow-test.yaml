@@ -1,0 +1,28 @@
+name: Test Application
+
+on:
+  push:
+    branches:
+    - main
+
+jobs:
+  test-application:
+    name: Run tests backend
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install supertest and jest 
+        run: |
+          cd app/backend
+          npm install supertest jest --save-dev
+        
+      - name: Run tests
+        run: |
+          cd app/backend
+          npm test
+          if [$? == 0]; then
+            echo "Les tests on réussi avec succés."
+          else
+            echo "Les test on échoué, veuillez vérifier l'application !!!"
+          fi
