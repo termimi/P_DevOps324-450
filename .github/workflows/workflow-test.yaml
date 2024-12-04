@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install supertest and jest
+      - name: Install supertest and jest --save-dev jest
         run: |
           cd app/backend
           npm install supertest jest
