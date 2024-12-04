@@ -21,7 +21,7 @@ jobs:
       - name: Run tests
         run: |
           cd app/backend
-          npm test
+          npm run test
           if [$? == 0]; then
             echo "Les tests on réussi avec succés."
           else
