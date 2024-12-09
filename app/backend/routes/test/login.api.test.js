@@ -16,10 +16,27 @@ describe('POST /api/user', () => {
                 password: "12345678"
             });
         expect(response.statusCode).toBe(200);
+        console.log(response.data);
         expect(response.body).toEqual({
+            __v: response.body.__v,
+            _id: response.body._id,
             name: "John Doe",
             email: 'john.doe@gmail.com'
         });
+    });
+    it('devrait afficher une erreur du à un manque de email', async () => {
+        const startTime = Date.now();
+        const response = await request(app)
+            .post('/api/user/add/')
+            .send({
+                name:'John Doe',
+                email: '',
+                password: "12345678"
+            });
+        const endTime = Date.now()
+        const responseTime = endTime-startTime;
+        // Vérifier que le message d'erreur est lié à l'email manquant ou vide
+        expect(response.statusCode).toBe(400);
     });
 });
 
