@@ -24,5 +24,19 @@ describe('POST /api/user', () => {
             email: 'john.doe@gmail.com'
         });
     });
+    it('devrait afficher une erreur du à un manque de email', async () => {
+        const startTime = Date.now();
+        const response = await request(app)
+            .post('/api/user/add/')
+            .send({
+                name:'John Doe',
+                email: '',
+                password: "12345678"
+            });
+        const endTime = Date.now()
+        const responseTime = endTime-startTime;
+        // Vérifier que le message d'erreur est lié à l'email manquant ou vide
+        expect(response.statusCode).toBe(400);
+    });
 });
 
