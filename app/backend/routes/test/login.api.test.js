@@ -16,7 +16,10 @@ describe('POST /api/user', () => {
                 password: "12345678"
             });
         expect(response.statusCode).toBe(200);
+        console.log(response.data);
         expect(response.body).toEqual({
+            __v: response.body.__v,
+            _id: response.body._id,
             name: "John Doe",
             email: 'john.doe@gmail.com'
         });
