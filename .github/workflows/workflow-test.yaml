@@ -15,11 +15,13 @@ jobs:
       - name: Install supertest and jest 
         run: |
           cd app/backend
+          npm install
           npm install supertest
           npm install jest
         
       - name: Run tests
         run: |
+          cd app/backend
           npm test
           if [$? == 0]; then
             echo "Les tests on réussi avec succés."
