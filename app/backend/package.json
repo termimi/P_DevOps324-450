@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node --watch index.js",
     "start:env": "node --env-file=.env --watch index.js",
+    "test": "jest",
     "test:dev": "jest --watch",
     "test:ci": "jest --coverage --ci",
     "lint": "eslint"
@@ -23,6 +24,7 @@
     "mongoose": "^8.7.2"
   },
   "devDependencies": {
+    "body-parser": "^1.20.3",
     "eslint": "^9.13.0",
     "jest": "^29.7.0",
     "supertest": "^7.0.0"
