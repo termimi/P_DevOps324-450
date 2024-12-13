@@ -37,7 +37,6 @@ router.post("/add", async (req, res) => {
 // delete current user
 router.delete("/delete", async (req, res) => {
   const token = req.cookies?.token;
-  console.log(req.cookies);
   if (token) {
     const decodedToken = jsonwebtoken.verify(token, keyPub);
     if(ObjectId.isValid(decodedToken.sub)) {
