@@ -44,8 +44,7 @@ router.delete("/delete", async (req, res) => {
       try {
         await TodoModel.deleteMany(query);
         await UserModel.findOneAndDelete(query);
-        res.status(200).json(null);
-        res.clearCookie('token');
+        res.status(200).clearCookie('token').json(null);
       } catch (err) {
         console.error("DELETE USER: ", err);
         res.status(400).json("Erreur lors de la suppression de l'utilisateur");
