@@ -37,6 +37,7 @@ router.post("/add", async (req, res) => {
 // delete current user
 router.delete("/delete", async (req, res) => {
   const token = req.cookies?.token;
+  console.log(req.cookies);
   if (token) {
     const decodedToken = jsonwebtoken.verify(token, keyPub);
     if(ObjectId.isValid(decodedToken.sub)) {
@@ -44,8 +45,7 @@ router.delete("/delete", async (req, res) => {
       try {
         await TodoModel.deleteMany(query);
         await UserModel.findOneAndDelete(query);
-        res.status(200).json(null);
-        res.clearCookie('token');
+        res.status(200).clearCookie('token').json(null);
       } catch (err) {
         console.error("DELETE USER: ", err);
         res.status(400).json("Erreur lors de la suppression de l'utilisateur");
