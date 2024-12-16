@@ -235,28 +235,6 @@ describe('Test de la gestion du profil', () => {
     cy.get('input[name="name"]').should('have.value', 'Jean');
   });
 
-  it('Supression du compte (Supression Profil)', () => {
-
-    cy.visit('http://localhost:4173/login');
-    cy.get('[name="email"]').type(email);
-    cy.get('[name="password"]').type('test2024#@123');
-    cy.get('button[type="submit"]').click();
-    cy.get('img[alt="Profile"]').click({ force: true })
-    cy.contains('Mon Profile').click();
-
-    cy.contains('Supprimer votre compte').click();
-
-    cy.url().should('include', '/register');
-
-    /*cy.visit('http://localhost:4173/login');
-    cy.get('[name="email"]').type(email);
-    cy.get('[name="password"]').type('test2024#@123');
-    cy.get('button[type="submit"]').click();
-
-    cy.wait(100000);
-
-    cy.contains("SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input").should("be.visible");*/
-  });
 });
 
 describe('Test ajout des Todos', () => {
@@ -327,8 +305,85 @@ describe('Test gestion des Todos', () => {
   });
 });
 
+describe('Test de la navigation', () => {
 
-/*describe('Test de la déconnexion', () => {
+  it('Changement de mode clair / sombre', () => {
+
+    cy.visit('http://localhost:4173/login');
+
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+
+    cy.get('#theme-toggle').click();
+
+    cy.get('html').should('have.class', 'dark');
+
+    cy.get('#theme-toggle').click();
+
+    cy.get('html').should('not.have.class', 'dark');
+    
+  });
+
+  it('Changement de page (A propos)', () => {
+
+    cy.visit('http://localhost:4173/login');
+
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+
+    cy.contains('À Propos').click();
+
+    cy.url().should('include', '/about');
+    
+  });
+
+  it('Changement de page (Todo)', () => {
+
+    cy.visit('http://localhost:4173/login');
+
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+
+    cy.contains('Mes Tâches').click();
+
+    cy.url().should('include', '/');
+    
+  });
+
+  it('Changement de page (Profil)', () => {
+
+    cy.visit('http://localhost:4173/login');
+
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+
+    cy.get('img[alt="Profile"]').click({ force: true })
+    cy.contains('Mon Profile').click();
+
+    cy.url().should('include', '/profile');
+    
+  });
+
+  it('Changement de page (Logo Accueil)', () => {
+
+    cy.visit('http://localhost:4173/login');
+
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+
+    cy.contains('Todo').click();
+
+    cy.url().should('include', '/');
+    
+  });
+});
+
+describe('Test de la déconnexion', () => {
 
   it('Déconnexion du profil (Déconnexion)', () => {
 
@@ -344,7 +399,31 @@ describe('Test gestion des Todos', () => {
     cy.contains('Déconnection').click();
 
     cy.get('img[alt="Profile"]').should('not.exist');
-    cy.url().should('include', '/login');
+    //cy.url().should('include', '/login');
   });
 });
-*/
+
+describe('Test de la Supression Compte', () => {
+
+  it('Supression du compte (Supression Profil)', () => {
+    cy.visit('http://localhost:4173/login');
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+    cy.get('img[alt="Profile"]').click({ force: true })
+    cy.contains('Mon Profile').click();
+  
+    cy.contains('Supprimer votre compte').click();
+  
+    cy.url().should('include', '/register');
+  
+    /*cy.visit('http://localhost:4173/login');
+    cy.get('[name="email"]').type(email);
+    cy.get('[name="password"]').type('test2024#@123');
+    cy.get('button[type="submit"]').click();
+  
+    cy.wait(100000);
+  
+    cy.contains("SyntaxError: Failed to execute 'json' on 'Response': Unexpected end of JSON input").should("be.visible");*/
+  });
+});
