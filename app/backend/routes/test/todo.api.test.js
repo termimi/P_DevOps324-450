@@ -33,7 +33,7 @@ describe('Ajout d\'une todo', () => {
           expiresIn: "1h",
           algorithm: "RS256",
         });
-      });
+    });
     
     it('devrait créer un nouvelle todo avec succès', async () => {
         const response = await request(app)
@@ -42,6 +42,52 @@ describe('Ajout d\'une todo', () => {
             .send({
                 text: 'Todo 1',
             });
+        expect(response.statusCode).toBe(200);
+    });
+});
+
+describe('Suppression d\'une todo', () => {
+    let todoId;
+    beforeAll(async () => {
+        const hashedPassword = await bcrypt.hash("12345678", 8);
+        user = new UserModel({
+          name: "todotester",
+          email: "123@gmail.com",
+          password: hashedPassword,
+          address: "tester 12",
+          NPA: 12,
+          place: "tester",
+        });
+        await user.save();
+    
+        // Générer un token valide
+        token = jsonwebtoken.sign({}, key, {
+          subject: user._id.toString(),
+          expiresIn: "1h",
+          algorithm: "RS256",
+        });
+
+        // Ajoute une todo
+        const response = await request(app)
+            .post('/api/todo/add/')
+            .set("Cookie", `token=${token}`)
+            .send({
+                text: 'Todo 1',
+            });
+
+        // Récupére les todos
+        const responseFromGet = await request(app)
+            .get('/api/todo/')
+            .set("Cookie", `token=${token}`)
+
+        todoId = responseFromGet.body[0]._id;
+        console.log(todoId);  
+    });
+
+    it('devrait supprimer une todo de l\'utilisateur', async () => {
+        const response = await request(app)
+            .post(`/api/todo/${todoId}`)
+            .set("Cookie", `token=${token}`);
         expect(response.statusCode).toBe(200);
     });
 });
