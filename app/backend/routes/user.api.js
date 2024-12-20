@@ -16,6 +16,9 @@ const cleanUser = (user) => {
 // create a new user
 router.post("/add", async (req, res) => {
   const body = req.body;
+  if(!body.name || !body.email || !body.password) {
+    return res.status(400).json("Tous les champs sont requis");
+  }
   const user = new UserModel({
     name: body.name,
     email: body.email,
