@@ -1,7 +1,7 @@
 const request = require('supertest');
 const express = require('express');
 const router = require('../index');
-
+const bcrypt = require('bcrypt');
 const UserModel = require('../../database/models/user.model')
 
 const app = express();
@@ -17,7 +17,6 @@ describe('Authentification', () => {
 
     it('Connexion user avec donnée valide', async () => {
         //Création d'un user de test
-        const bcrypt = require('bcrypt');
         const user = new UserModel({
           email: "User@gmail.com",
           password: await bcrypt.hash("Password", 10),
