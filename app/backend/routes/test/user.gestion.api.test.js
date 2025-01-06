@@ -1,7 +1,7 @@
 const request = require("supertest");
 const router = require("express");
 const userRouter = require("../index.js");
-const UserModel = require("../../database/models/user.model");
+const UserModel = require("../../database/models/user.model.js");
 const jsonwebtoken = require("jsonwebtoken");
 const { key } = require('../../env/keys/index');
 const cookieParser = require('cookie-parser');
@@ -119,13 +119,13 @@ describe("PATCH /api/user/edit", () => {
     });
     
     // Test ne fonctionne pas car le token est manquant et que le serveur ne renvoie pas d'erreur
-    /*// Test pour le cas où le token est manquant
+    // Test pour le cas où le token est manquant
     it("devrait retourner une erreur si le token est manquant", async () => {
       const response = await request(app).patch("/api/user/edit").send({
         name: "testToken",
       });
   
       expect(response.statusCode).toBe(400);
-    });*/
+    });
   
   });

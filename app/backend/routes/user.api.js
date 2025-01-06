@@ -83,6 +83,10 @@ router.patch("/edit", async (req, res) => {
       }
     }
   }
+  else
+  {
+    res.status(400).json("Pas de token fournis");
+  }
 });
 
 // get the current user
